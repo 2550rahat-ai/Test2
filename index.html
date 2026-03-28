@@ -1,374 +1,782 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>টর্চলাইট - Flashlight</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flash Light App</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            transition: background 0.3s ease;
-        }
-        
-        body.light-on {
-            background: linear-gradient(135deg, #ffa726 0%, #fb8c00 30%, #1a1a2e 70%);
-        }
-        
-        .container {
-            text-align: center;
-            width: 100%;
-            max-width: 400px;
-        }
-        
-        h1 {
-            color: #fff;
-            font-size: 28px;
-            margin-bottom: 10px;
-            text-shadow: 0 2px 10px rgba(255,255,255,0.1);
-        }
-        
-        .subtitle {
-            color: #a0aec0;
-            font-size: 14px;
-            margin-bottom: 40px;
-        }
-        
-        .flashlight-btn {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            background: linear-gradient(145deg, #2d3748, #1a202c);
-            box-shadow: 
-                0 10px 40px rgba(0,0,0,0.5),
-                inset 0 2px 10px rgba(255,255,255,0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 30px;
-            transition: all 0.3s ease;
-        }
-        
-        .flashlight-btn:active {
-            transform: scale(0.95);
-        }
-        
-        .flashlight-btn.on {
-            background: linear-gradient(145deg, #fff9c4, #ffeb3b);
-            box-shadow: 
-                0 0 60px #ffeb3b,
-                0 0 120px #ff9800,
-                inset 0 -2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .flashlight-btn.on svg {
-            fill: #f57f17;
-            filter: drop-shadow(0 0 10px #ff6f00);
-        }
-        
-        .flashlight-btn.on .btn-text {
-            color: #f57f17;
-        }
-        
-        .flashlight-btn svg {
-            width: 80px;
-            height: 80px;
-            fill: #4a5568;
-            transition: all 0.3s ease;
-        }
-        
-        .flashlight-btn.off svg {
-            fill: #a0aec0;
-        }
-        
-        .btn-text {
-            margin-top: 10px;
-            font-size: 18px;
-            font-weight: bold;
-            color: #a0aec0;
-            transition: color 0.3s ease;
-        }
-        
-        .status {
-            color: #fff;
-            font-size: 18px;
-            margin-bottom: 20px;
-            min-height: 27px;
-        }
-        
-        .status.error {
-            color: #fc8181;
-        }
-        
-        .status.success {
-            color: #68d391;
-        }
-        
-        .warning {
-            background: rgba(255, 193, 7, 0.1);
-            border: 1px solid rgba(255, 193, 7, 0.3);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .warning h3 {
-            color: #ffc107;
-            font-size: 16px;
-            margin-bottom: 8px;
-        }
-        
-        .warning p {
-            color: #e2e8f0;
-            font-size: 13px;
-            line-height: 1.5;
-            margin: 5px 0;
-        }
-        
-        .permission-btn {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border: none;
-            color: white;
-            padding: 15px 40px;
-            border-radius: 30px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 15px;
-            transition: transform 0.2s ease;
-        }
-        
-        .permission-btn:hover {
-            transform: translateY(-2px);
-        }
-        
-        .permission-btn:disabled {
-            background: #4a5568;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .alternative {
-            margin-top: 30px;
-            padding: 20px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 15px;
-        }
-        
-        .alternative h3 {
-            color: #68d391;
-            font-size: 16px;
-            margin-bottom: 10px;
-        }
-        
-        .alternative p {
-            color: #a0aec0;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-        
-        .screen-flash {
-            width: 80px;
-            height: 80px;
-            border-radius: 15px;
-            background: #fff;
-            border: none;
-            cursor: pointer;
-            margin-top: 15px;
-            box-shadow: 0 4px 15px rgba(255,255,255,0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .screen-flash svg {
-            width: 40px;
-            height: 40px;
-            fill: #333;
-        }
+/**
+ * ============================================================
+ * FLASH LIGHT APP - MODERN UI DESIGN
+ * Based on user reference image - INLINE VERSION
+ * ============================================================
+ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Colors - OFF state (Blue Cyan) */
+    --primary-off: #00D4FF;
+    --glow-off: rgba(0, 212, 255, 0.6);
+    
+    /* Colors - ON state (Green Lime) */
+    --primary-on: #00FF88;
+    --glow-on: rgba(0, 255, 136, 0.6);
+    
+    /* Background colors */
+    --bg-dark: #0D0D0D;
+    --bg-panel: #1A1A1A;
+    --bg-button: #262626;
+    
+    /* Text */
+    --text-primary: #FFFFFF;
+    --text-secondary: #888888;
+}
+
+body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-dark);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: 
+        linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 30%),
+        repeating-linear-gradient(
+            180deg,
+            transparent,
+            transparent 4px,
+            rgba(255,255,255,0.02) 4px,
+            rgba(255,255,255,0.02) 5px
+        );
+}
+
+.app-container {
+    width: 360px;
+    height: 640px;
+    background: var(--bg-dark);
+    border-radius: 30px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 
+        0 0 60px rgba(0,0,0,0.8),
+        inset 0 1px 0 rgba(255,255,255,0.1),
+        inset 0 -1px 0 rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 30px;
+}
+
+/* ============================================================
+   TOP INDICATOR DOTS
+   ============================================================ */
+.indicator-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 50px;
+}
+
+.indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    transition: all 0.3s ease;
+}
+
+.indicator.active {
+    background: var(--primary-off);
+    box-shadow: 0 0 10px var(--glow-off);
+}
+
+.app-container.on .indicator.active {
+    background: var(--primary-on);
+    box-shadow: 0 0 10px var(--glow-on);
+}
+
+/* ============================================================
+   MAIN FLASH BUTTON - Circular with outer ring
+   ============================================================ */
+.flash-wrapper {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flash-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: conic-gradient(
+        from 0deg,
+        transparent 0%,
+        var(--primary-off) 0%,
+        var(--primary-off) 20%,
+        transparent 20%,
+        transparent 40%,
+        var(--primary-off) 40%,
+        var(--primary-off) 60%,
+        transparent 60%,
+        transparent 100%
+    );
+    opacity: 0.3;
+    transition: all 0.4s ease;
+}
+
+.flash-ring::before {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    background: var(--bg-panel);
+    border-radius: 50%;
+}
+
+.flash-btn {
+    position: relative;
+    z-index: 10;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        0 8px 32px rgba(0,0,0,0.5),
+        inset 0 2px 4px rgba(255,255,255,0.1),
+        inset 0 -2px 4px rgba(0,0,0,0.3);
+    border: 2px solid rgba(0,212,255,0.2);
+}
+
+.flash-btn:hover {
+    transform: scale(1.02);
+}
+
+.flash-btn:active {
+    transform: scale(0.98);
+}
+
+.power-icon {
+    width: 60px;
+    height: 60px;
+    color: var(--primary-off);
+    transition: all 0.4s ease;
+    filter: drop-shadow(0 0 8px var(--glow-off));
+}
+
+/* ============================================================
+   ON STATE STYLES
+   ============================================================ */
+.app-container.on .flash-ring {
+    background: conic-gradient(
+        from 0deg,
+        var(--primary-on) 0%,
+        var(--primary-on) 100%
+    );
+    opacity: 1;
+    animation: rotate-ring 3s linear infinite;
+}
+
+@keyframes rotate-ring {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.app-container.on .flash-btn {
+    background: linear-gradient(145deg, #1a3a2a, #0d2617);
+    border-color: var(--primary-on);
+    box-shadow: 
+        0 8px 32px rgba(0,255,136,0.3),
+        inset 0 2px 4px rgba(255,255,255,0.1),
+        inset 0 -2px 4px rgba(0,0,0,0.3);
+}
+
+.app-container.on .power-icon {
+    color: var(--primary-on);
+    filter: drop-shadow(0 0 20px var(--glow-on));
+}
+
+/* ============================================================
+   SOS BUTTON
+   ============================================================ */
+.sos-btn {
+    margin-top: 40px;
+    width: 80px;
+    height: 35px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: linear-gradient(145deg, #262626, #1a1a1a);
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 
+        0 4px 12px rgba(0,0,0,0.4),
+        inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+.sos-btn:hover {
+    background: linear-gradient(145deg, #303030, #252525);
+    color: var(--primary-off);
+    border-color: var(--primary-off);
+}
+
+.sos-btn:active {
+    transform: scale(0.95);
+}
+
+.app-container.on .sos-btn {
+    color: var(--primary-on);
+    border-color: var(--primary-on);
+}
+
+/* ============================================================
+   BOTTOM CONTROLS
+   ============================================================ */
+.bottom-controls {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 10px;
+}
+
+.app-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.flash-text {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: var(--primary-off);
+    transition: all 0.4s ease;
+}
+
+.ui-text {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 6px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+}
+
+.app-container.on .flash-text {
+    color: var(--primary-on);
+    text-shadow: 0 0 20px var(--glow-on);
+}
+
+.icon-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.icon-btn:hover {
+    background: rgba(255,255,255,0.05);
+    color: var(--text-primary);
+}
+
+.icon-btn svg {
+    width: 22px;
+    height: 22px;
+}
+
+.app-container.on .icon-btn {
+    color: var(--primary-on);
+}
+
+/* ============================================================
+   MODAL - SOS
+   ============================================================ */
+.modal {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.9);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: var(--bg-panel);
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+
+.modal-content h3 {
+    color: var(--primary-off);
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.modal-content p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.sos-indicator {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 25px;
+    border-radius: 50%;
+    background: var(--primary-off);
+    animation: sos-pulse 1s ease-in-out infinite;
+}
+
+@keyframes sos-pulse {
+    0%, 100% { 
+        opacity: 1; 
+        transform: scale(1);
+        box-shadow: 0 0 0 0 var(--glow-off);
+    }
+    50% { 
+        opacity: 0.5; 
+        transform: scale(0.9);
+        box-shadow: 0 0 20px 10px var(--glow-off);
+    }
+}
+
+.stop-btn {
+    width: 120px;
+    height: 45px;
+    border-radius: 25px;
+    border: none;
+    background: #ff4444;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.stop-btn:hover {
+    background: #ff6666;
+    transform: scale(1.05);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 400px) {
+    .app-container {
+        width: 100%;
+        height: 100vh;
+        border-radius: 0;
+    }
+}
+
+/* ============================================================
+   FULL SCREEN FLASH EFFECT
+   ============================================================ */
+.flash-overlay {
+    position: fixed;
+    inset: 0;
+    background: #fff;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.1s ease;
+}
+
+.flash-overlay.active {
+    opacity: 0.9;
+}
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>💡 টর্চলাইট</h1>
-        <p class="subtitle">Flashlight App</p>
-        
-        <div class="warning">
-            <h3>⚠️ মনে রাখবেন</h3>
-            <p>• ক্যামেরা ফ্ল্যাশ নিয়ন্ত্রণ শুধুমাত্র চিহ্নিত Chrome Android ব্রাউজারে কাজ করে</p>
-            <p>• iPhone, Safari, Firefox বা ডেস্কটপে কাজ করবে না</p>
-            <p>• HTTPS প্রয়োজন (লোকাল ফাইলে অসম্পূর্ণ কাজ করতে পারে)</p>
+    <div class="app-container">
+        <!-- Top indicator dots -->
+        <div class="indicator-row">
+            <div class="indicator"></div>
+            <div class="indicator"></div>
+            <div class="indicator"></div>
+            <div class="indicator"></div>
+            <div class="indicator"></div>
+            <div class="indicator"></div>
+            <div class="indicator"></div>
+            <div class="indicator"></div>
+            <div class="indicator active"></div>
+            <div class="indicator"></div>
+            <div class="indicator"></div>
+            <div class="indicator"></div>
+            <div class="indicator"></div>
+            <div class="indicator"></div>
+            <div class="indicator"></div>
         </div>
-        
-        <div class="status" id="status">ক্যামেরা এক্সেস দিতে "অনুমতি দিন" বোতামে ক্লিক করুন</div>
-        
-        <button class="permission-btn" id="permissionBtn" onclick="requestCamera()">
-            📷 ক্যামেরা অনুমতি দিন
-        </button>
-        
-        <button class="flashlight-btn off" id="flashBtn" onclick="toggleFlash()" style="display: none;">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6A4.997 4.997 0 0 1 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z"/>
-            </svg>
-            <span class="btn-text">OFF</span>
-        </button>
-        
-        <div class="alternative">
-            <h3>✨ বিকল্প সমাধান</h3>
-            <p>আপনার ডিভাইস যদি ক্যামেরা ফ্ল্যাশ সমর্থন না করে, স্ক্রিনের আলো ব্যবহার করুন:</p>
-            <button class="screen-flash" id="screenBtn" onclick="toggleScreenLight()">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69zM12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm0-10c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z"/>
+
+        <!-- Main toggle button -->
+        <div class="flash-wrapper">
+            <div class="flash-ring" id="flashRing">
+                <div class="flash-btn" id="flashBtn">
+                    <svg class="power-icon" viewBox="0 0 24 24">
+                        <path d="M12 2V12M8 6C5.5 7.5 4 10 4 13C4 17.4 7.6 21 12 21C16.4 21 20 17.4 20 13C20 10 18.5 7.5 16 6" 
+                              stroke="currentColor" 
+                              stroke-width="2" 
+                              stroke-linecap="round"
+                              fill="none"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- SOS Button -->
+        <button class="sos-btn" id="sosBtn">SOS</button>
+
+        <!-- Bottom controls -->
+        <div class="bottom-controls">
+            <button class="icon-btn" id="settingsBtn">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 15C13.66 15 15 13.66 15 12C15 10.34 13.66 9 12 9C10.34 9 9 10.34 9 12C9 13.66 10.34 15 12 15Z" fill="currentColor"/>
+                    <path d="M19.4 13C19.5 12.7 19.5 12.3 19.5 12C19.5 11.7 19.5 11.3 19.4 11L21.5 9.4C21.7 9.2 21.8 8.9 21.6 8.6L19.6 5.6C19.4 5.3 19.1 5.2 18.8 5.3L16.3 6.3C15.8 5.9 15.2 5.6 14.6 5.4L14.2 2.8C14.2 2.4 13.9 2.1 13.5 2.1H10.5C10.1 2.1 9.8 2.4 9.8 2.7L9.4 5.4C8.8 5.6 8.2 5.9 7.7 6.3L5.2 5.3C4.9 5.2 4.6 5.3 4.4 5.6L2.4 8.6C2.2 8.9 2.3 9.2 2.5 9.4L4.6 11C4.5 11.3 4.5 11.7 4.5 12C4.5 12.3 4.5 12.7 4.6 13L2.5 14.6C2.3 14.8 2.2 15.1 2.4 15.4L4.4 18.4C4.6 18.7 4.9 18.8 5.2 18.7L7.7 17.7C8.2 18.1 8.8 18.4 9.4 18.6L9.8 21.2C9.8 21.6 10.1 21.9 10.5 21.9H13.5C13.9 21.9 14.2 21.6 14.2 21.3L14.6 18.6C15.2 18.4 15.8 18.1 16.3 17.7L18.8 18.7C19.1 18.8 19.4 18.7 19.6 18.4L21.6 15.4C21.8 15.1 21.7 14.8 21.5 14.6L19.4 13Z" fill="currentColor"/>
                 </svg>
             </button>
-            <p style="margin-top: 10px; font-size: 12px;">(স্ক্রিন সর্বোচ্চ উজ্জ্বলতায় সাদা রঙ হবে)</p>
+            <div class="app-title">
+                <span class="flash-text">FLASH LIGHT</span>
+                <span class="ui-text">APP UI</span>
+            </div>
+            <button class="icon-btn" id="soundBtn">
+                <svg viewBox="0 0 24 24">
+                    <path d="M3 9V15H7L12 20V4L7 9H3Z" fill="currentColor"/>
+                    <path d="M16 9C16.5 9.5 17 10.5 17 12C17 13.5 16.5 14.5 16 15M19 7C20.5 8.5 21 10 21 12C21 14 20.5 15.5 19 17" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- SOS Modal -->
+        <div class="modal" id="sosModal">
+            <div class="modal-content">
+                <h3>SOS Signal</h3>
+                <p>Sending distress signal...</p>
+                <div class="sos-indicator"></div>
+                <button class="stop-btn" id="stopSos">STOP</button>
+            </div>
         </div>
     </div>
 
     <script>
-        let stream = null;
-        let track = null;
-        let isFlashOn = false;
-        let isScreenLightOn = false;
-        const statusEl = document.getElementById('status');
-        const flashBtn = document.getElementById('flashBtn');
-        const permissionBtn = document.getElementById('permissionBtn');
+/**
+ * ============================================================
+ * FLASH LIGHT APP - INTERACTIVE FUNCTIONALITY
+ * ============================================================
+ */
 
-        // Check browser support
-        function checkSupport() {
-            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                statusEl.textContent = '❌ আপনার ব্রাউজার ক্যামেরা ফ্ল্যাশ সমর্থন করে না';
-                statusEl.className = 'status error';
-                permissionBtn.style.display = 'none';
-                return false;
+(function() {
+    'use strict';
+
+    // DOM Elements
+    const appContainer = document.querySelector('.app-container');
+    const flashBtn = document.getElementById('flashBtn');
+    const flashRing = document.getElementById('flashRing');
+    const sosBtn = document.getElementById('sosBtn');
+    const sosModal = document.getElementById('sosModal');
+    const stopSos = document.getElementById('stopSos');
+    const soundBtn = document.getElementById('soundBtn');
+    const settingsBtn = document.getElementById('settingsBtn');
+
+    // State
+    let isFlashOn = false;
+    let isSoundEnabled = true;
+    let sosInterval = null;
+    let stream = null;
+    let track = null;
+
+    // ============================================================
+    // INITIALIZE
+    // ============================================================
+    function init() {
+        setupEventListeners();
+        setupAudio();
+        console.log('Flash Light App initialized');
+    }
+
+    // ============================================================
+    // EVENT LISTENERS
+    // ============================================================
+    function setupEventListeners() {
+        flashBtn.addEventListener('click', toggleFlash);
+        sosBtn.addEventListener('click', startSOS);
+        stopSos.addEventListener('click', stopSOS);
+        soundBtn.addEventListener('click', toggleSound);
+        settingsBtn.addEventListener('click', openSettings);
+    }
+
+    // ============================================================
+    // FLASH TOGGLE
+    // ============================================================
+    async function toggleFlash() {
+        isFlashOn = !isFlashOn;
+        
+        if (isFlashOn) {
+            await turnOnFlash();
+        } else {
+            turnOffFlash();
+        }
+        
+        updateUI();
+        if (isSoundEnabled) playClickSound();
+    }
+
+    async function turnOnFlash() {
+        try {
+            // Try to access camera flashlight (works on Chrome Android)
+            stream = await navigator.mediaDevices.getUserMedia({ 
+                video: { facingMode: 'environment' } 
+            });
+            track = stream.getVideoTracks()[0];
+            
+            const capabilities = track.getCapabilities();
+            if (capabilities.torch) {
+                await track.applyConstraints({ advanced: [{ torch: true }] });
+            }
+        } catch (err) {
+            console.log('Camera flash not available:', err);
+            // Fallback: Use screen brightness
+            document.body.classList.add('screen-flash');
+        }
+    }
+
+    function turnOffFlash() {
+        if (track) {
+            const capabilities = track.getCapabilities();
+            if (capabilities.torch) {
+                track.applyConstraints({ advanced: [{ torch: false }] });
+            }
+            track.stop();
+            track = null;
+        }
+        
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+            stream = null;
+        }
+        
+        document.body.classList.remove('screen-flash');
+    }
+
+    // ============================================================
+    // UI UPDATES
+    // ============================================================
+    function updateUI() {
+        if (isFlashOn) {
+            appContainer.classList.add('on');
+            flashBtn.setAttribute('aria-pressed', 'true');
+        } else {
+            appContainer.classList.remove('on');
+            flashBtn.setAttribute('aria-pressed', 'false');
+        }
+    }
+
+    // ============================================================
+    // SOS SIGNAL
+    // ============================================================
+    function startSOS() {
+        if (isSoundEnabled) playClickSound();
+        sosModal.classList.add('active');
+        
+        let sosStep = 0;
+        const pattern = [200, 200, 200, 600, 600, 600, 200, 200, 200]; // SOS: ... --- ...
+        
+        function runSOS() {
+            if (sosStep >= pattern.length) sosStep = 0;
+            
+            // Visual flash
+            appContainer.classList.add('sos-signal');
+            
+            if (isSoundEnabled) {
+                playSOSBeep(sosStep < 3 || sosStep > 5 ? 880 : 440, pattern[sosStep]);
             }
             
-            // Check for torch capability
-            const supported = 'ImageCapture' in window || 
-                (navigator.mediaDevices && navigator.mediaDevices.getSupportedConstraints &&
-                navigator.mediaDevices.getSupportedConstraints().torch);
-                
-            return supported;
-        }
-
-        async function requestCamera() {
-            statusEl.textContent = 'ক্যামেরা চালু হচ্ছে...';
+            setTimeout(() => {
+                appContainer.classList.remove('sos-signal');
+                sosStep++;
+            }, pattern[sosStep] / 2);
             
-            try {
-                stream = await navigator.mediaDevices.getUserMedia({
-                    video: { 
-                        facingMode: 'environment',
-                        torch: true 
-                    }
-                });
-                
-                const videoTracks = stream.getVideoTracks();
-                
-                if (videoTracks.length === 0) {
-                    throw new Error('ক্যামেরা পাওয়া যায়নি');
-                }
-                
-                track = videoTracks[0];
-                const capabilities = track.getCapabilities();
-                
-                permissionBtn.style.display = 'none';
-                flashBtn.style.display = 'flex';
-                
-                if (capabilities.torch) {
-                    statusEl.textContent = '✅ প্রস্তুত! ফ্ল্যাশ অন/অফ করতে বোতামে চাপুন';
-                    statusEl.className = 'status success';
-                } else {
-                    statusEl.textContent = '⚠️ ক্যামেরা চালু তবে ফ্ল্যাশ নিয়ন্ত্রণ সমর্থন করে না';
-                    statusEl.className = 'status';
-                }
-                
-            } catch (err) {
-                statusEl.textContent = '❌ ত্রুটি: ' + (err.message || 'ক্যামেরা এক্সেস ব্লক করা হয়েছে');
-                statusEl.className = 'status error';
-                
-                if (err.name === 'NotAllowedError') {
-                    statusEl.textContent = '❌ ক্যামেরা অনুমতি বাতিল করা হয়েছে। ব্রাউজার সেটিংস থেকে অনুমতি দিন।';
-                }
-            }
+            sosInterval = setTimeout(runSOS, pattern[sosStep]);
         }
+        
+        runSOS();
+    }
 
-        async function toggleFlash() {
-            if (!track) return;
-            
-            try {
-                isFlashOn = !isFlashOn;
-                
-                await track.applyConstraints({
-                    advanced: [{ torch: isFlashOn }]
-                });
-                
-                if (isFlashOn) {
-                    flashBtn.classList.add('on');
-                    flashBtn.classList.remove('off');
-                    flashBtn.querySelector('.btn-text').textContent = 'ON';
-                    statusEl.textContent = '💡 ফ্ল্যাশ চালু আছে';
-                    statusEl.className = 'status success';
-                } else {
-                    flashBtn.classList.remove('on');
-                    flashBtn.classList.add('off');
-                    flashBtn.querySelector('.btn-text').textContent = 'OFF';
-                    statusEl.textContent = '✅ প্রস্তুত! ফ্ল্যাশ অন/অফ করতে বোতামে চাপুন';
-                    statusEl.className = 'status success';
-                }
-            } catch (err) {
-                statusEl.textContent = '❌ ফ্ল্যাশ নিয়ন্ত্রণ করতে পারছি না';
-                statusEl.className = 'status error';
-                isFlashOn = false;
-            }
+    function stopSOS() {
+        if (sosInterval) {
+            clearTimeout(sosInterval);
+            sosInterval = null;
         }
+        sosModal.classList.remove('active');
+        appContainer.classList.remove('sos-signal');
+        if (isSoundEnabled) playClickSound();
+    }
 
-        function toggleScreenLight() {
-            isScreenLightOn = !isScreenLightOn;
-            const btn = document.getElementById('screenBtn');
-            const body = document.body;
-            
-            if (isScreenLightOn) {
-                // Try to request fullscreen and maximum brightness
-                document.documentElement.requestFullscreen?.();
-                
-                // Bright white screen
-                body.style.background = '#ffffff';
-                body.style.backgroundImage = 'none';
-                btn.style.background = '#333';
-                btn.querySelector('svg').style.fill = '#fff';
-            } else {
-                document.exitFullscreen?.();
-                body.style.background = '';
-                btn.style.background = '#fff';
-                btn.querySelector('svg').style.fill = '#333';
-            }
+    // ============================================================
+    // AUDIO SYSTEM
+    // ============================================================
+    let audioCtx = null;
+    
+    function setupAudio() {
+        // Audio context will be created on first user interaction
+    }
+
+    function initAudio() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         }
+    }
 
-        // Initialize
-        checkSupport();
+    function playClickSound() {
+        initAudio();
+        if (!audioCtx) return;
+        
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        
+        osc.frequency.value = isFlashOn ? 600 : 400;
+        osc.type = 'sine';
+        
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+        
+        osc.start(audioCtx.currentTime);
+        osc.stop(audioCtx.currentTime + 0.1);
+    }
 
-        // Handle page unload
-        window.onbeforeunload = function() {
-            if (stream) {
-                stream.getTracks().forEach(track => track.stop());
+    function playSOSBeep(freq, duration) {
+        if (!audioCtx) return;
+        
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        
+        osc.frequency.value = freq;
+        osc.type = 'square';
+        
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration / 1000);
+        
+        osc.start(audioCtx.currentTime);
+        osc.stop(audioCtx.currentTime + duration / 1000);
+    }
+
+    function toggleSound() {
+        isSoundEnabled = !isSoundEnabled;
+        soundBtn.style.opacity = isSoundEnabled ? '1' : '0.4';
+        if (isSoundEnabled) playClickSound();
+    }
+
+    // ============================================================
+    // SETTINGS
+    // ============================================================
+    function openSettings() {
+        if (isSoundEnabled) playClickSound();
+        alert('⚙️ Settings:\n\n' +
+              '🔊 Sound: ' + (isSoundEnabled ? 'ON' : 'OFF') + '\n' +
+              '💡 Flash Status: ' + (isFlashOn ? 'ON' : 'OFF') + '\n' +
+              '📱 Device: ' + navigator.userAgent.split(' ')[0] + '\n\n' +
+              'Version: 2.0 (Modern UI)');
+    }
+
+    // ============================================================
+    // KEYBOARD SHORTCUTS
+    // ============================================================
+    document.addEventListener('keydown', (e) => {
+        if (e.code === 'Space') {
+            e.preventDefault();
+            toggleFlash();
+        }
+        if (e.code === 'Escape' && sosModal.classList.contains('active')) {
+            stopSOS();
+        }
+    });
+
+    // ============================================================
+    // VIBRATION
+    // ============================================================
+    function vibrate(pattern) {
+        if ('vibrate' in navigator) {
+            navigator.vibrate(pattern);
+        }
+    }
+
+    // Vibrate on button clicks
+    [flashBtn, sosBtn, stopSos].forEach(btn => {
+        btn.addEventListener('click', () => vibrate(50));
+    });
+
+    // ============================================================
+    // WAKE LOCK (Keep screen on when flash is on)
+    // ============================================================
+    let wakeLock = null;
+    
+    async function requestWakeLock() {
+        try {
+            if ('wakeLock' in navigator) {
+                wakeLock = await navigator.wakeLock.request('screen');
             }
-        };
+        } catch (err) {
+            console.log('Wake lock not available:', err);
+        }
+    }
+    
+    async function releaseWakeLock() {
+        if (wakeLock) {
+            await wakeLock.release();
+            wakeLock = null;
+        }
+    }
+
+    // Initialize
+    init();
+
+    // Export for debugging
+    window.flashApp = {
+        toggle: toggleFlash,
+        isOn: () => isFlashOn,
+        getState: () => ({ isFlashOn, isSoundEnabled })
+    };
+
+})();
     </script>
 </body>
 </html>

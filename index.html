@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>টর্চলাইট - Flashlight</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            transition: background 0.3s ease;
+        }
+        
+        body.light-on {
+            background: linear-gradient(135deg, #ffa726 0%, #fb8c00 30%, #1a1a2e 70%);
+        }
+        
+        .container {
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        h1 {
+            color: #fff;
+            font-size: 28px;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(255,255,255,0.1);
+        }
+        
+        .subtitle {
+            color: #a0aec0;
+            font-size: 14px;
+            margin-bottom: 40px;
+        }
+        
+        .flashlight-btn {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(145deg, #2d3748, #1a202c);
+            box-shadow: 
+                0 10px 40px rgba(0,0,0,0.5),
+                inset 0 2px 10px rgba(255,255,255,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .flashlight-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .flashlight-btn.on {
+            background: linear-gradient(145deg, #fff9c4, #ffeb3b);
+            box-shadow: 
+                0 0 60px #ffeb3b,
+                0 0 120px #ff9800,
+                inset 0 -2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .flashlight-btn.on svg {
+            fill: #f57f17;
+            filter: drop-shadow(0 0 10px #ff6f00);
+        }
+        
+        .flashlight-btn.on .btn-text {
+            color: #f57f17;
+        }
+        
+        .flashlight-btn svg {
+            width: 80px;
+            height: 80px;
+            fill: #4a5568;
+            transition: all 0.3s ease;
+        }
+        
+        .flashlight-btn.off svg {
+            fill: #a0aec0;
+        }
+        
+        .btn-text {
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #a0aec0;
+            transition: color 0.3s ease;
+        }
+        
+        .status {
+            color: #fff;
+            font-size: 18px;
+            margin-bottom: 20px;
+            min-height: 27px;
+        }
+        
+        .status.error {
+            color: #fc8181;
+        }
+        
+        .status.success {
+            color: #68d391;
+        }
+        
+        .warning {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .warning h3 {
+            color: #ffc107;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .warning p {
+            color: #e2e8f0;
+            font-size: 13px;
+            line-height: 1.5;
+            margin: 5px 0;
+        }
+        
+        .permission-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: transform 0.2s ease;
+        }
+        
+        .permission-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .permission-btn:disabled {
+            background: #4a5568;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .alternative {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+        }
+        
+        .alternative h3 {
+            color: #68d391;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        .alternative p {
+            color: #a0aec0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .screen-flash {
+            width: 80px;
+            height: 80px;
+            border-radius: 15px;
+            background: #fff;
+            border: none;
+            cursor: pointer;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(255,255,255,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .screen-flash svg {
+            width: 40px;
+            height: 40px;
+            fill: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💡 টর্চলাইট</h1>
+        <p class="subtitle">Flashlight App</p>
+        
+        <div class="warning">
+            <h3>⚠️ মনে রাখবেন</h3>
+            <p>• ক্যামেরা ফ্ল্যাশ নিয়ন্ত্রণ শুধুমাত্র চিহ্নিত Chrome Android ব্রাউজারে কাজ করে</p>
+            <p>• iPhone, Safari, Firefox বা ডেস্কটপে কাজ করবে না</p>
+            <p>• HTTPS প্রয়োজন (লোকাল ফাইলে অসম্পূর্ণ কাজ করতে পারে)</p>
+        </div>
+        
+        <div class="status" id="status">ক্যামেরা এক্সেস দিতে "অনুমতি দিন" বোতামে ক্লিক করুন</div>
+        
+        <button class="permission-btn" id="permissionBtn" onclick="requestCamera()">
+            📷 ক্যামেরা অনুমতি দিন
+        </button>
+        
+        <button class="flashlight-btn off" id="flashBtn" onclick="toggleFlash()" style="display: none;">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6A4.997 4.997 0 0 1 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z"/>
+            </svg>
+            <span class="btn-text">OFF</span>
+        </button>
+        
+        <div class="alternative">
+            <h3>✨ বিকল্প সমাধান</h3>
+            <p>আপনার ডিভাইস যদি ক্যামেরা ফ্ল্যাশ সমর্থন না করে, স্ক্রিনের আলো ব্যবহার করুন:</p>
+            <button class="screen-flash" id="screenBtn" onclick="toggleScreenLight()">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69zM12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm0-10c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z"/>
+                </svg>
+            </button>
+            <p style="margin-top: 10px; font-size: 12px;">(স্ক্রিন সর্বোচ্চ উজ্জ্বলতায় সাদা রঙ হবে)</p>
+        </div>
+    </div>
+
+    <script>
+        let stream = null;
+        let track = null;
+        let isFlashOn = false;
+        let isScreenLightOn = false;
+        const statusEl = document.getElementById('status');
+        const flashBtn = document.getElementById('flashBtn');
+        const permissionBtn = document.getElementById('permissionBtn');
+
+        // Check browser support
+        function checkSupport() {
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                statusEl.textContent = '❌ আপনার ব্রাউজার ক্যামেরা ফ্ল্যাশ সমর্থন করে না';
+                statusEl.className = 'status error';
+                permissionBtn.style.display = 'none';
+                return false;
+            }
+            
+            // Check for torch capability
+            const supported = 'ImageCapture' in window || 
+                (navigator.mediaDevices && navigator.mediaDevices.getSupportedConstraints &&
+                navigator.mediaDevices.getSupportedConstraints().torch);
+                
+            return supported;
+        }
+
+        async function requestCamera() {
+            statusEl.textContent = 'ক্যামেরা চালু হচ্ছে...';
+            
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: { 
+                        facingMode: 'environment',
+                        torch: true 
+                    }
+                });
+                
+                const videoTracks = stream.getVideoTracks();
+                
+                if (videoTracks.length === 0) {
+                    throw new Error('ক্যামেরা পাওয়া যায়নি');
+                }
+                
+                track = videoTracks[0];
+                const capabilities = track.getCapabilities();
+                
+                permissionBtn.style.display = 'none';
+                flashBtn.style.display = 'flex';
+                
+                if (capabilities.torch) {
+                    statusEl.textContent = '✅ প্রস্তুত! ফ্ল্যাশ অন/অফ করতে বোতামে চাপুন';
+                    statusEl.className = 'status success';
+                } else {
+                    statusEl.textContent = '⚠️ ক্যামেরা চালু তবে ফ্ল্যাশ নিয়ন্ত্রণ সমর্থন করে না';
+                    statusEl.className = 'status';
+                }
+                
+            } catch (err) {
+                statusEl.textContent = '❌ ত্রুটি: ' + (err.message || 'ক্যামেরা এক্সেস ব্লক করা হয়েছে');
+                statusEl.className = 'status error';
+                
+                if (err.name === 'NotAllowedError') {
+                    statusEl.textContent = '❌ ক্যামেরা অনুমতি বাতিল করা হয়েছে। ব্রাউজার সেটিংস থেকে অনুমতি দিন।';
+                }
+            }
+        }
+
+        async function toggleFlash() {
+            if (!track) return;
+            
+            try {
+                isFlashOn = !isFlashOn;
+                
+                await track.applyConstraints({
+                    advanced: [{ torch: isFlashOn }]
+                });
+                
+                if (isFlashOn) {
+                    flashBtn.classList.add('on');
+                    flashBtn.classList.remove('off');
+                    flashBtn.querySelector('.btn-text').textContent = 'ON';
+                    statusEl.textContent = '💡 ফ্ল্যাশ চালু আছে';
+                    statusEl.className = 'status success';
+                } else {
+                    flashBtn.classList.remove('on');
+                    flashBtn.classList.add('off');
+                    flashBtn.querySelector('.btn-text').textContent = 'OFF';
+                    statusEl.textContent = '✅ প্রস্তুত! ফ্ল্যাশ অন/অফ করতে বোতামে চাপুন';
+                    statusEl.className = 'status success';
+                }
+            } catch (err) {
+                statusEl.textContent = '❌ ফ্ল্যাশ নিয়ন্ত্রণ করতে পারছি না';
+                statusEl.className = 'status error';
+                isFlashOn = false;
+            }
+        }
+
+        function toggleScreenLight() {
+            isScreenLightOn = !isScreenLightOn;
+            const btn = document.getElementById('screenBtn');
+            const body = document.body;
+            
+            if (isScreenLightOn) {
+                // Try to request fullscreen and maximum brightness
+                document.documentElement.requestFullscreen?.();
+                
+                // Bright white screen
+                body.style.background = '#ffffff';
+                body.style.backgroundImage = 'none';
+                btn.style.background = '#333';
+                btn.querySelector('svg').style.fill = '#fff';
+            } else {
+                document.exitFullscreen?.();
+                body.style.background = '';
+                btn.style.background = '#fff';
+                btn.querySelector('svg').style.fill = '#333';
+            }
+        }
+
+        // Initialize
+        checkSupport();
+
+        // Handle page unload
+        window.onbeforeunload = function() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+        };
+    </script>
+</body>
+</html>

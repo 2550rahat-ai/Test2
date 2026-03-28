@@ -419,6 +419,39 @@ body {
 .flash-overlay.active {
     opacity: 0.9;
 }
+
+/* ============================================================
+   SOS SIGNAL FLASH EFFECT
+   ============================================================ */
+.app-container.sos-signal .flash-btn {
+    background: linear-gradient(145deg, #3a1a1a, #260d0d);
+    border-color: #ff4444;
+    box-shadow: 
+        0 8px 32px rgba(255, 68, 68, 0.5),
+        inset 0 2px 4px rgba(255,255,255,0.1),
+        inset 0 -2px 4px rgba(0,0,0,0.3);
+    animation: sos-flash 0.1s ease;
+}
+
+.app-container.sos-signal .power-icon {
+    color: #ff4444;
+    filter: drop-shadow(0 0 20px rgba(255, 68, 68, 0.8));
+}
+
+.app-container.sos-signal .flash-ring {
+    background: conic-gradient(
+        from 0deg,
+        #ff4444 0%,
+        #ff4444 100%
+    );
+    opacity: 1;
+}
+
+@keyframes sos-flash {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
     </style>
 </head>
 <body>
@@ -607,39 +640,81 @@ body {
     // ============================================================
     // SOS SIGNAL
     // ============================================================
-    function startSOS() {
+    let sosRunning = false;
+    
+    async function startSOS() {
+        if (sosRunning) return;
+        sosRunning = true;
+        
         if (isSoundEnabled) playClickSound();
         sosModal.classList.add('active');
         
         let sosStep = 0;
-        const pattern = [200, 200, 200, 600, 600, 600, 200, 200, 200]; // SOS: ... --- ...
+        // SOS Pattern: ... --- ... (3 short, 3 long, 3 short)
+        // Dot = 200ms ON, 200ms OFF
+        // Dash = 600ms ON, 200ms OFF
+        const pattern = [
+            { on: 200, off: 200 },  // Dot
+            { on: 200, off: 200 },  // Dot
+            { on: 200, off: 600 },  // Dot (extra pause before dash)
+            { on: 600, off: 200 },  // Dash
+            { on: 600, off: 200 },  // Dash
+            { on: 600, off: 600 },  // Dash (extra pause before dot)
+            { on: 200, off: 200 },  // Dot
+            { on: 200, off: 200 },  // Dot
+            { on: 200, off: 200 }   // Dot
+        ];
         
-        function runSOS() {
+        async function runSOS() {
+            if (!sosRunning) return;
             if (sosStep >= pattern.length) sosStep = 0;
             
-            // Visual flash
-            appContainer.classList.add('sos-signal');
+            const { on, off } = pattern[sosStep];
             
+            // Turn ON real flashlight
+            await turnOnFlash();
+            
+            // Visual feedback
+            appContainer.classList.add('sos-signal');
+            isFlashOn = true;
+            updateUI();
+            
+            // Sound
             if (isSoundEnabled) {
-                playSOSBeep(sosStep < 3 || sosStep > 5 ? 880 : 440, pattern[sosStep]);
+                playSOSBeep(sosStep < 3 || sosStep > 5 ? 880 : 440, on);
             }
             
-            setTimeout(() => {
-                appContainer.classList.remove('sos-signal');
-                sosStep++;
-            }, pattern[sosStep] / 2);
+            // Wait for "ON" duration
+            await new Promise(resolve => setTimeout(resolve, on));
             
-            sosInterval = setTimeout(runSOS, pattern[sosStep]);
+            if (!sosRunning) return;
+            
+            // Turn OFF real flashlight
+            turnOffFlash();
+            appContainer.classList.remove('sos-signal');
+            isFlashOn = false;
+            updateUI();
+            
+            sosStep++;
+            
+            // Wait for "OFF" duration before next signal
+            sosInterval = setTimeout(runSOS, off);
         }
         
         runSOS();
     }
 
     function stopSOS() {
+        sosRunning = false;
         if (sosInterval) {
             clearTimeout(sosInterval);
             sosInterval = null;
         }
+        // Make sure flash is OFF
+        turnOffFlash();
+        isFlashOn = false;
+        updateUI();
+        
         sosModal.classList.remove('active');
         appContainer.classList.remove('sos-signal');
         if (isSoundEnabled) playClickSound();
